@@ -2,6 +2,8 @@ package com.example.idus_exam.Member;
 
 import com.example.idus_exam.Member.model.Member;
 import com.example.idus_exam.Member.model.MemberDto;
+import com.example.idus_exam.Payment.PaymentRepository;
+import com.example.idus_exam.Payment.model.Payment;
 import com.example.idus_exam.emailVerify.EmailVerifyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -19,6 +22,7 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailVerifyService emailVerifyService;
+    private final PaymentRepository paymentRepository;
 
     public void signup(MemberDto.SignupRequest dto) {
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
@@ -34,7 +38,7 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> result = memberRepository.findByUser(username);
+        Optional<Member> result = memberRepository.findByUsername(username);
         if (result.isPresent()) {
             Member member = result.get();
             return member;
@@ -42,18 +46,32 @@ public class MemberService implements UserDetailsService {
         return null;
     }
 
-    public List<Member> list() {
+    public List<MemberDto.MemberResponse> list() {
         List<Member> members = memberRepository.findAll();
-        return members;
+        return members.stream()
+                .map(member -> {
+                    Optional<Payment> latestPayment = paymentRepository.findTopByMemberOrderByPaymentTimeDesc(member);
+
+                    return new MemberDto.MemberResponse(
+                            member.getIdx(),
+                            member.getNickname(),
+                            member.getPhonenumber(),
+                            member.getEmail(),
+                            latestPayment.map(Payment::getPaymentTime).orElse(null),
+                            latestPayment.map(Payment::getAmount).orElse(null)
+                    );
+                })
+                .collect(Collectors.toList());
     }
 
-    public MemberDto.MemberResponse read(Long idx) {
-        Optional<Member> result = memberRepository.findById(idx);
+    public MemberDto.MemberResponse read(String email) {
+        Optional<Member> result = memberRepository.findByEmail(email);
 
         if (result.isPresent()) {
             Member member = result.get();
             return MemberDto.MemberResponse.from(member);
         }
+
         return null;
     }
 

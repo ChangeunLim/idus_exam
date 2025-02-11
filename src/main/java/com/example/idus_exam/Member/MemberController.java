@@ -30,9 +30,9 @@ public class MemberController {
         memberService.instructorSignup(dto);
     }
 
-    @GetMapping("/read/{idx}")
-    public ResponseEntity<MemberDto.MemberResponse> read(@PathVariable Long idx) {
-        MemberDto.MemberResponse res = memberService.read(idx);
+    @GetMapping("/read")
+    public ResponseEntity<MemberDto.MemberResponse> read(@PathVariable String email) {
+        MemberDto.MemberResponse res = memberService.read(email);
         return ResponseEntity.ok(res);
     }
 

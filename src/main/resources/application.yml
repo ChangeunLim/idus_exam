@@ -38,3 +38,7 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+jwt:
+  skey: ${jwt_key}
+  expored : ${jwt_exp}

@@ -2,6 +2,8 @@ package com.example.idus_exam.Member.model;
 
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 public class MemberDto {
     @Getter
     public static class SignupRequest {
@@ -35,6 +37,8 @@ public class MemberDto {
         private String nickname;
         private String email;
         private int phonenumber;
+        private LocalDateTime lastPaymentData;
+        priv
 
         public static MemberResponse from(Member member) {
             MemberResponse response = new MemberResponse();
