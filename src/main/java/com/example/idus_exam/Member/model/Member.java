@@ -1,5 +1,6 @@
 package com.example.idus_exam.Member.model;
 
+import com.example.idus_exam.Payment.model.Payment;
 import com.example.idus_exam.emailVerify.model.EmailVerify;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,11 +33,11 @@ public class Member implements UserDetails {
     private String role;
     private boolean enabled;
 
-    @OneToOne(mappedBy = "member")
+    @OneToMany(mappedBy = "member")
     private List<EmailVerify> emailVerifyList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<Course> courseList = new ArrayList<>();
+    private List<Payment> paymentList = new ArrayList<>();
 
     public void verify() { this.enabled = true; }
 
