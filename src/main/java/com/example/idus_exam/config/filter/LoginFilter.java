@@ -28,14 +28,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         System.out.println("LoginFilter 실행됐다.");
         UsernamePasswordAuthenticationToken authToken;
-        // 그림에서 1번 로직
-//        MemberDto.SignupRequest MemberDto =
-//                new MemberDto.SignupRequest(request.getParameter("Membername"), request.getParameter("password"));
+
         try {
-            // 그림에서 원래 1번이었던 로직을 JSON 형태의 데이터를 처리하도록 변경
+
             MemberDto.SignupRequest MemberDto  = new ObjectMapper().readValue(request.getInputStream(), MemberDto.SignupRequest.class);
 
-            // 그림에서 2번 로직
             authToken =
                     new UsernamePasswordAuthenticationToken(MemberDto.getEmail(), MemberDto.getPassword(), null);
 
@@ -43,22 +40,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             throw new RuntimeException(e);
         }
 
-        // 그림에서 3번 로직
         return authenticationManager.authenticate(authToken);
     }
 
-    // 그림에서 9번 로직
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         Member Member = (Member) authResult.getPrincipal();
         String jwtToken = JwtUtil.generateToken(Member.getIdx(), Member.getEmail(), Member.getNickname(), Member.getRole());
 
-
-//        일반적인 객체 생성 및 객체의 변수에 값을 설정하는 방법
-//        ResponseCookie cookie = new ResponseCookie();
-//        cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        빌더 패턴으로 객체를 생성하면서 값을 설정하는 방법
         ResponseCookie cookie = ResponseCookie
                 .from("ATOKEN", jwtToken)
                 .path("/")

@@ -27,4 +27,23 @@ public class MemberDto {
             }
         }
     }
+
+    @Getter
+    public static class MemberResponse {
+        private Long idx;
+        private String username;
+        private String nickname;
+        private String email;
+        private int phonenumber;
+
+        public static MemberResponse from(Member member) {
+            MemberResponse response = new MemberResponse();
+            response.idx = member.getIdx();
+            response.nickname = member.getNickname();
+            response.email = member.getEmail();
+            response.phonenumber = member.getPhonenumber();
+            response.username = member.getUsername();
+            return response;
+        }
+    }
 }
