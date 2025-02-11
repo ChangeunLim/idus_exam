@@ -29,7 +29,7 @@ public class Member implements UserDetails {
     private String password;
     private int phonenumber;
     private String email;
-    private boolean gender;
+//    private boolean gender;
     private String role;
     private boolean enabled;
 

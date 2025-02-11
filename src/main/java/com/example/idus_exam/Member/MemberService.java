@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -30,12 +31,28 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(dto.toEntity(encodedPassword, "INSTRUCTOR"));
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> result = memberRepository.findByEmail(username);
+        Optional<Member> result = memberRepository.findByUser(username);
         if (result.isPresent()) {
             Member member = result.get();
             return member;
+        }
+        return null;
+    }
+
+    public List<Member> list() {
+        List<Member> members = memberRepository.findAll();
+        return members;
+    }
+
+    public MemberDto.MemberResponse read(Long idx) {
+        Optional<Member> result = memberRepository.findById(idx);
+
+        if (result.isPresent()) {
+            Member member = result.get();
+            return MemberDto.MemberResponse.from(member);
         }
         return null;
     }

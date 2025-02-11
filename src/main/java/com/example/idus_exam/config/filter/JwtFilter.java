@@ -1,7 +1,7 @@
 package com.example.idus_exam.config.filter;
 
-import com.example.inpurun.Member.model.Member;
-import com.example.inpurun.Utils.JwtUtil;
+import com.example.idus_exam.Member.model.Member;
+import com.example.idus_exam.Utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -38,7 +38,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-
         }
 
         filterChain.doFilter(request, response);
