@@ -3,10 +3,9 @@ package com.example.idus_exam.Member.model;
 import com.example.idus_exam.Payment.model.Payment;
 import com.example.idus_exam.emailVerify.model.EmailVerify;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,10 +23,15 @@ public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+    @Pattern(regexp = "^[가-힣a-zA-Z]+$")
     private String username;
+    @Pattern(regexp = "^[a-z]+$")
     private String nickname;
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]+$")
     private String password;
+    @Pattern(regexp = "^[0-9]+$")
     private int phonenumber;
+    @Email @NonNull @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
 //    private boolean gender;
     private String role;
