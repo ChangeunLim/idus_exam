@@ -1,4 +1,9 @@
 spring:
+  # sql문 실행해주는 기능
+  sql:
+    init:
+      mode: always
+      
   mail:
     host: smtp.gmail.com
     port: 587
