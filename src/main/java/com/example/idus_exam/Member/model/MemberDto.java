@@ -1,5 +1,10 @@
 package com.example.idus_exam.Member.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -38,7 +43,6 @@ public class MemberDto {
         private String email;
         private int phonenumber;
         private LocalDateTime lastPaymentData;
-        priv
 
         public static MemberResponse from(Member member) {
             MemberResponse response = new MemberResponse();
